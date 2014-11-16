@@ -2,20 +2,20 @@
 
 @section('content')
 <h1>Edit Task</h1>
-{{ Form::model($task, ['route'=>['tasks.update', $task->id], 'method'=>'put'])}}
+{{ Form::open(['route'=>['tasks.update', $task->id], 'method'=>'put'])}}
   <div>
     {{ Form::label('taskName', 'Task Name:') }}
-    {{ Form::text('taskName') }}
+    {{ Form::text('taskName', $task->taskName) }}
     {{ $errors->first('taskName') }}
   </div>
   <div>
     {{ Form::label('taskDueDate', 'Due Date:') }}
-    {{ Form::text('taskDueDate') }}
+    {{ Form::text('taskDueDate', date('n/j/Y', strtotime($task->taskDueDate))) }}
     {{ $errors->first('taskDueDate') }}
   </div>
   <div>
     {{ Form::label('taskComplete', 'Complete?:') }}
-    {{ Form::checkbox('taskComplete', 1)}}
+    {{ Form::checkbox('taskComplete', 1, $task->taskComplete) }}
   <div>
     {{ Form::submit() }}
   </div>

@@ -12,8 +12,15 @@
     <tbody>
       @foreach ($tasks as $task)
         <tr>
-          <td>{{ link_to("tasks/{$task->taskName}", $task->taskName) }}</td>
-          <td>{{ date('n/j/Y',strtotime($task->taskDueDate)) }}</td>
+          <td>{{ link_to("tasks/{$task->id}/edit", $task->taskName) }}</td>
+          <td>
+            @if(empty($task->taskDueDate))
+              None
+            @else
+              {{ date('n/j/Y',strtotime($task->taskDueDate)) }}
+            @endif
+          </td>
+          <td>{{Form::delete('tasks/'. $task->id, 'Delete')}}</td>
         </tr>
       @endforeach
     </tbody>
@@ -21,4 +28,9 @@
   <div>
     <a href="/tasks/create" title="New Task">New Task</a>
   </div>
+  <script>
+    $(document).on('submit', '.delete-form', function(){
+      return confirm('Are you sure?');
+    });
+  </script>
 @stop

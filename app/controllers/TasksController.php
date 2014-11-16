@@ -41,11 +41,16 @@ class TasksController extends \BaseController {
           if (!$this->task->fill(Input::all())->isValid()) {
             return Redirect::back()->withInput()->withErrors($this->task->errors);
           }
+          $newTask = $this->task;
           $taskName = Input::get('taskName');
-          $taskDueDate = date('Y-m-d H:m:s', strtotime(Input::get('taskDueDate')));
-          $this->task->taskName = $taskName;
-          $this->task->taskDueDate = $taskDueDate;
-          $this->task->save();
+          if (!empty(Input::get('taskDueDate'))) {
+            $taskDueDate = date('Y-m-d H:m:s', strtotime(Input::get('taskDueDate')));
+          } else {
+            $taskDueDate = null;
+          }
+          $newTask->taskName = $taskName;
+          $newTask->taskDueDate = $taskDueDate;
+          $newTask->save();
           return Redirect::route('tasks.index');
 	}
 
@@ -58,7 +63,8 @@ class TasksController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		//
+          $currentTask = $this->task->where('id', '=', $id)->first();
+          return View::make('tasks.show')->with('task', $currentTask);
 	}
 
 
@@ -70,7 +76,8 @@ class TasksController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		//
+          $currentTask = $this->task->where('id', '=', $id)->first();
+          return View::make('tasks.edit')->with('task', $currentTask);
 	}
 
 
@@ -82,7 +89,20 @@ class TasksController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+          if (!$this->task->fill(Input::all())->isValid()) {
+            return Redirect::back()->withInput()->withErrors($this->task->errors);
+          }
+          $taskName = Input::get('taskName');
+          if (!empty(Input::get('taskDueDate'))) {
+            $taskDueDate = date('Y-m-d H:m:s', strtotime(Input::get('taskDueDate')));
+          } else {
+            $taskDueDate = null;
+          }
+          $currentTask = $this->task->find($id);
+          $currentTask->taskName = $taskName;
+          $currentTask->taskDueDate = $taskDueDate;
+          $currentTask->save();
+          return Redirect::route('tasks.index');
 	}
 
 
@@ -94,7 +114,8 @@ class TasksController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		//
+          $this->task->destroy($id);
+          return Redirect::route('tasks.index');
 	}
 
 

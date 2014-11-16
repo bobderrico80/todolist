@@ -14,6 +14,9 @@
     {{ $errors->first('taskDueDate') }}
   </div>
   <div>
+    {{ Form::label('taskComplete', 'Complete?:') }}
+    {{ Form::checkbox('taskComplete', 1)}}
+  <div>
     {{ Form::submit() }}
   </div>
 {{ Form::close() }}

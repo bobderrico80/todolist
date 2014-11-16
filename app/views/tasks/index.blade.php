@@ -7,6 +7,7 @@
       <tr>
         <td>Task</td>
         <td>Due Date</td>
+        <td>Complete?</td>
       </tr>
     </thead>
     <tbody>
@@ -18,6 +19,13 @@
               None
             @else
               {{ date('n/j/Y',strtotime($task->taskDueDate)) }}
+            @endif
+          </td>
+          <td>
+            @if ($task->taskComplete)
+              Yes
+            @else
+              No
             @endif
           </td>
           <td>{{Form::delete('tasks/'. $task->id, 'Delete')}}</td>

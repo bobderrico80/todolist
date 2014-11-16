@@ -98,9 +98,11 @@ class TasksController extends \BaseController {
           } else {
             $taskDueDate = null;
           }
+          $taskComplete = Input::has('taskComplete') ? 1 : 0;
           $currentTask = $this->task->find($id);
           $currentTask->taskName = $taskName;
           $currentTask->taskDueDate = $taskDueDate;
+          $currentTask->taskComplete = $taskComplete;
           $currentTask->save();
           return Redirect::route('tasks.index');
 	}

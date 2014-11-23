@@ -12,3 +12,5 @@
 */
 
 Route::resource('tasks', 'TasksController');
+
+Route::resource('categories', 'CategoriesController');
